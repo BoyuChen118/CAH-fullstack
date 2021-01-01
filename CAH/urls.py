@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from rest_framework import routers
-from CAHapp import views
+from CAHapp.views import RoomViewSet
 
 router = routers.DefaultRouter()
-router.register(r'rooms',views.RoomViewSet)
+router.register(r'rooms',RoomViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('CAH/',include('CAHapp.urls')),
-    path('',include(router.urls)),
+    path('api/',include(router.urls)),
+    path('', include('frontend.urls')),
 ]
