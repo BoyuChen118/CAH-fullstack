@@ -1,0 +1,13 @@
+body{
+
+    background: black;
+    position: absolute;
+    top:40%;
+    left:30%;
+}
+
+h1{
+    color: aliceblue;
+    font-size:  xxx-large;
+    display: inline;
+}
