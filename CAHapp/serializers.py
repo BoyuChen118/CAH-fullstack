@@ -8,3 +8,7 @@ class RoomSerializer(ModelSerializer):
         model = Room
         fields = '__all__'
 
+class CreateRoomSerializer(ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ['num_rounds']
