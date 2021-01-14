@@ -19,6 +19,8 @@ class RoomViewSet(viewsets.ModelViewSet):
     def test(self):
         return HttpResponse("I'm in RoomViewset")
 
+
+
 class CreateViewSet(APIView):
     serializer_class = CreateRoomSerializer
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 export default class RoomCreatePage extends Component {
   constructor(props) {
@@ -9,7 +10,20 @@ export default class RoomCreatePage extends Component {
       roomCode: "",
       error: "",
     };
+    this.createButtonPressed = this.createButtonPressed.bind(this)
   }
+  
+async createButtonPressed () {
+  const url = "http://127.0.0.1:8000/CAH/create/";
+  const payload = {
+    "num_rounds":"20"
+  }
+  axios.post(url,payload).then(response => {
+    this.setState({"roomCode":"Complete"})
+  })
+  
+ 
+}
 
   render() {
     return (
@@ -23,7 +37,7 @@ export default class RoomCreatePage extends Component {
           <Button
             variant="contained"
             color="default"
-            onClick={this.roomButtonPressed}
+            onClick={this.createButtonPressed}
           >
             Create Room
           </Button>
