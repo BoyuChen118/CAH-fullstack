@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
-def index(request):
+def index(request,*args, **kwargs):
     return render(request, "frontend/index.html")
 # Create your views here.

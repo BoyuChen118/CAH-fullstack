@@ -1,117 +1,76 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import React, { Component } from "react";
+import { render } from "react-dom";
+import TestModule from "./test";
+import { Button } from "@material-ui/core";
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import RoomJoinPage from "./joinroom";
+import { useHistory } from "react-router";
+import { Redirect } from "react-router-dom";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+export default class Room extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            loading: true,
+            roomsdata: null,
+            redirect: null,
+        }
 
-export default function Room() {
-  const classes = useStyles();
+    }
+    
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+
+    async componentDidMount(){
+        const url = "http://127.0.0.1:8000/CAH/rooms";
+        const response = await fetch(url);
+        const data = await response.json();
+        const roomcode = window.location.pathname.slice(1,-1);
+        
+        // for (d of data){
+        //     // iterate through room data and find the room with the url code
+        //     console.log("bruh");
+        // }
+        this.setState({
+            roomsdata: data.results[1].code,
+            loading: false,
+        });
+        console.log(roomcode);
+    }
+    render(){
+        if (this.state.redirect){
+            return <Redirect to={this.state.redirect} />
+        }
+
+
+        return<div>
+        <div style= "justify-content:center;"><h1>
+            Welcome to Cards Against Humanity</h1></div>
+            {this.state.loading ? <div>loading..</div> : <div>{this.state.roomsdata}</div>}
+            <div class="buttons" style={{justifyContent: 'center'}}>
+            <ButtonGroup size="small" aria-label="small outlined button group">
+                <Button
+            type="submit"
+            variant="contained"
+            color="default"
+            onClick={this.join}
+          >
+            Join Room
+          </Button>
           <Button
             type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            halfWidth
+            variant="outlined"
+            color="default"
+            onClick={this.create}
           >
-            Sign In
+            Create Room
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
-  );
+          </ButtonGroup>
+          </div>
+     
+            </div>
+        
+     
+    }
 }

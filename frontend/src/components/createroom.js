@@ -9,6 +9,7 @@ export default class RoomCreatePage extends Component {
     this.state = {
       roomCode: "",
       error: "",
+      redirect: null,
     };
     this.createButtonPressed = this.createButtonPressed.bind(this)
   }
@@ -25,8 +26,10 @@ async createButtonPressed () {
  
 }
 
+
   render() {
     return (
+        
       <Grid container spacing={3} >
         <Grid item xs={12} align="center">
           <Typography variant="h4" component="h4">
@@ -48,6 +51,7 @@ async createButtonPressed () {
           </Button>
         </Grid>
       </Grid>
+      
     );
   }
 

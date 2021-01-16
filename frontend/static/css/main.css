@@ -30,9 +30,10 @@ body {
     animation: bgcolor 10s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
-    position: absolute;
-    top:35%;
+    position: sticky;
+    /* top:35%;
     left:28%;
+    justify-content: center; */
 }
 
 
@@ -43,6 +44,10 @@ h1{
     display: block;
 }
 div.buttons{
-    display:flex;
+    display:block;
     align-items: center;
+}
+div#home{
+    margin-left: 30em;
+    margin-top: 20em;
 }

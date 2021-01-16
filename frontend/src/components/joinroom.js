@@ -10,11 +10,12 @@ export default class RoomJoinPage extends Component {
       error: "",
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+    this.roomButtonPressed= this.roomButtonPressed(this);
   }
 
   render() {
     return (
-      <Grid container spacing={3}>
+      <Grid container spacing={3} >
         <Grid item xs={12} align="center">
           <Typography variant="h4" component="h4">
             Join a Room
@@ -22,7 +23,9 @@ export default class RoomJoinPage extends Component {
         </Grid>
         <Grid item xs={12} align="center">
           <TextField
-          />
+          label="Enter RoomCode" onChange={this.handleTextFieldChange}/>
+          {/* <TextField
+          label="Enter Name" onChange={this.handleTextFieldChange}/> */}
         </Grid>
         <Grid item xs={12} align="center">
           <Button
@@ -42,10 +45,13 @@ export default class RoomJoinPage extends Component {
     );
   }
 
-  handleTextFieldChange(e) {
+  handleTextFieldChange(event) {
     this.setState({
-      roomCode: e.target.value,
+      roomCode: event.target.value,
     });
+  }
+  async roomButtonPressed(){
+
   }
 
 }

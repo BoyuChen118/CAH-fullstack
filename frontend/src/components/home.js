@@ -29,22 +29,23 @@ export default class Home extends Component{
         this.setState({redirect: "/create"});
     }
 
-    // async componentDidMount(){
-    //     const url = "http://127.0.0.1:8000/api/rooms";
-    //     const response = await fetch(url);
-    //     const data = await response.json();
-    //     this.setState({
-    //         roomsdata: data.results[1].code,
-    //         loading: false,
-    //     });
-    // }
+    async componentDidMount(){
+        // const url = "http://127.0.0.1:8000/api/rooms";
+        // const response = await fetch(url);
+        // const data = await response.json();
+        // this.setState({
+        //     roomsdata: data.results[1].code,
+        //     loading: false,
+        // });
+        console.log(window.location.pathname);
+    }
     render(){
         if (this.state.redirect){
             return <Redirect to={this.state.redirect} />
         }
 
 
-        return<div>
+        return<div id="home">
         <div><h1>
             Welcome to Cards Against Humanity</h1></div>
             {/* {this.state.loading ? <div>loading..</div> : <div>{this.state.roomsdata}</div>} */}
@@ -69,7 +70,6 @@ export default class Home extends Component{
           </Button>
           </ButtonGroup>
           </div>
-     
             </div>
         
      
