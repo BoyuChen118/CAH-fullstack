@@ -1,9 +1,18 @@
 from django.db import models
-import string,random
+import string,random,requests
 
+def check_unique(checkcode):    # check if the generated code is unique
+    response = requests.get('http://127.0.0.1:8000/CAH/rooms/')
+    if response.status_code == 200:
+        rooms = response.json()["results"]
+        for room in rooms:
+            if room["code"] == checkcode:
+                return False
+    return True
 
 def generate_code():
     code = "".join(random.sample(population=string.ascii_letters,k=6))
+    check_unique(code)
     return code
 
 

@@ -20,13 +20,13 @@ from django.urls.conf import include
 from rest_framework import routers
 from CAHapp.views import RoomViewSet,CreateViewSet
 
-# router = routers.DefaultRouter()
-# router.register(r'rooms',RoomViewSet)
+router = routers.DefaultRouter()
+router.register(r'rooms',RoomViewSet)
 # router.register(r'create', CreateViewSet,basename='Room')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('CAH/',include('CAHapp.urls')),
-    # path('api/',include(router.urls)),
+    path('api/',include(router.urls)),
     path('', include('frontend.urls')),
 ]

@@ -3,9 +3,6 @@ import { render } from "react-dom";
 import TestModule from "./test";
 import { Button } from "@material-ui/core";
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import RoomJoinPage from "./joinroom";
-import { useHistory } from "react-router";
-import { Redirect } from "react-router-dom";
 
 
 export default class Room extends Component{
@@ -38,13 +35,10 @@ export default class Room extends Component{
         console.log(roomcode);
     }
     render(){
-        if (this.state.redirect){
-            return <Redirect to={this.state.redirect} />
-        }
-
+        
 
         return<div>
-        <div style= "justify-content:center;"><h1>
+        <div style={{justifyContent: 'center'}}><h1>
             Welcome to Cards Against Humanity</h1></div>
             {this.state.loading ? <div>loading..</div> : <div>{this.state.roomsdata}</div>}
             <div class="buttons" style={{justifyContent: 'center'}}>

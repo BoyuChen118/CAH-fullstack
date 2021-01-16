@@ -35,16 +35,16 @@ export default class App extends Component{
         return<div>
          <Router>
           <Switch>
-        
+          <Route path="/join/:roomcode">
+            <Room/>
+          </Route>
           <Route path="/join">
             <RoomJoinPage />
           </Route>
           <Route path="/create">
             <RoomCreatePage />
           </Route>
-          <Route path="/:roomcode">
-            <Room/>
-          </Route>
+          
           <Route path="/">
             <Home/>
             </Route>

@@ -1,19 +1,37 @@
 import React, { Component } from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import {Redirect} from "react-router-dom";
+
 
 export default class RoomJoinPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       roomCode: "",
-      error: "",
+      name: "",
+      redirect: null,
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
-    this.roomButtonPressed= this.roomButtonPressed(this);
+    this.buttonpressed= this.buttonpressed.bind(this);
+  }
+  buttonpressed(){
+    this.setState({
+      redirect: `/join/${this.state.roomCode}`,
+    });
+  }
+
+  handleTextFieldChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+    
   }
 
   render() {
+    if(this.state.redirect){
+      return <Redirect to={this.state.redirect} />
+    }
     return (
       <Grid container spacing={3} >
         <Grid item xs={12} align="center">
@@ -23,15 +41,18 @@ export default class RoomJoinPage extends Component {
         </Grid>
         <Grid item xs={12} align="center">
           <TextField
-          label="Enter RoomCode" onChange={this.handleTextFieldChange}/>
-          {/* <TextField
-          label="Enter Name" onChange={this.handleTextFieldChange}/> */}
+          label="Enter RoomCode"  name="roomCode"  onChange={this.handleTextFieldChange}/>
+        </Grid>
+        <Grid item xs={12} align="center">
+        <TextField
+          label="Enter Name" name="name"  onChange={this.handleTextFieldChange}/>
         </Grid>
         <Grid item xs={12} align="center">
           <Button
             variant="contained"
             color="default"
-            onClick={this.roomButtonPressed}
+            type="submit"
+            onClick={this.buttonpressed}
           >
             Enter Room
           </Button>
@@ -45,13 +66,7 @@ export default class RoomJoinPage extends Component {
     );
   }
 
-  handleTextFieldChange(event) {
-    this.setState({
-      roomCode: event.target.value,
-    });
-  }
-  async roomButtonPressed(){
 
-  }
+  
 
 }

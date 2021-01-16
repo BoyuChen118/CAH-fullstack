@@ -9,7 +9,5 @@ export default class TestModule extends Component{
         return<div>
         <p>this a test</p>
             </div>
-            
-     
     }
 }

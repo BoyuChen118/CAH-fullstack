@@ -14,7 +14,7 @@ def index(request):
     return HttpResponse("Hello World!")
 
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all().order_by('createdAt')
+    queryset = Room.objects.all()
     serializer_class = RoomSerializer
     def test(self):
         return HttpResponse("I'm in RoomViewset")
