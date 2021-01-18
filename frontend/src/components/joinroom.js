@@ -16,6 +16,7 @@ export default class RoomJoinPage extends Component {
     this.buttonpressed= this.buttonpressed.bind(this);
   }
   buttonpressed(){
+    
     this.setState({
       redirect: `/join/${this.state.roomCode}`,
     });

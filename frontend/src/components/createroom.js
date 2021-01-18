@@ -10,20 +10,27 @@ export default class RoomCreatePage extends Component {
       roomCode: "",
       error: "",
       redirect: null,
+      num_rounds: 40,
     };
-    this.createButtonPressed = this.createButtonPressed.bind(this)
+    this.createButtonPressed = this.createButtonPressed.bind(this);
+    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
   }
   
 async createButtonPressed () {
   const url = "http://127.0.0.1:8000/CAH/create/";
   const payload = {
-    "num_rounds":"20"
+    "num_rounds": this.state.num_rounds.toString()
   }
   axios.post(url,payload).then(response => {
     this.setState({"roomCode":"Complete"})
   })
   
- 
+}
+
+handleTextFieldChange(event){
+  this.setState({
+    [event.target.name]: event.target.value,
+  });
 }
 
 
@@ -35,6 +42,10 @@ async createButtonPressed () {
           <Typography variant="h4" component="h4">
             Create Room
           </Typography>
+        </Grid>
+        <Grid item xs={12} align="center">
+        <TextField
+          label="Enter # of rounds" name="num_rounds"  onChange={this.handleTextFieldChange}/>
         </Grid>
         <Grid item xs={12} align="center">
           <Button

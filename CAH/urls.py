@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from rest_framework import routers
-from CAHapp.views import RoomViewSet,CreateViewSet
+from CAHapp.views import PersonViewSet, RoomViewSet,CreateViewSet
 
 router = routers.DefaultRouter()
 router.register(r'rooms',RoomViewSet)
+router.register(r'players',PersonViewSet)
 # router.register(r'create', CreateViewSet,basename='Room')
 
 urlpatterns = [

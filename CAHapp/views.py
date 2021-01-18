@@ -5,8 +5,8 @@ from rest_framework import viewsets,generics,status
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CreateRoomSerializer, RoomSerializer
-from .models import Room
+from .serializers import CreateRoomSerializer, PersonSerializer, RoomSerializer
+from .models import Person, Room
 
 
 
@@ -18,6 +18,13 @@ class RoomViewSet(viewsets.ModelViewSet):
     serializer_class = RoomSerializer
     def test(self):
         return HttpResponse("I'm in RoomViewset")
+
+class PersonViewSet(viewsets.ModelViewSet):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
+    # def post(self,request,format=None):
+    #     serializer = self.serializer_class(data=request.data)
 
 
 
