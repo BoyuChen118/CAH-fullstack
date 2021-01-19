@@ -18,12 +18,12 @@ export default class RoomCreatePage extends Component {
   }
   
 async createButtonPressed () {
-  const url = "http://127.0.0.1:8000/CAH/create/";
+  const url = "http://127.0.0.1:8000/api/rooms/";
   const payload = {
     "num_rounds": this.state.num_rounds.toString()
   }
   axios.post(url,payload).then(response => {
-    if (response.status == 200){
+    if (response.status == 201){
       this.setState({
         redirect: `/join/${response.data['code']}`,
         roomCode: response.data['code']

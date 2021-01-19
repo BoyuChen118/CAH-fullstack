@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from rest_framework import routers
-from CAHapp.views import PersonViewSet, RoomViewSet,CreateViewSet
+from CAHapp.views import PersonViewSet, RoomViewSet
 
 router = routers.DefaultRouter()
 router.register(r'rooms',RoomViewSet)

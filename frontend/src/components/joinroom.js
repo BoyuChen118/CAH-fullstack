@@ -17,21 +17,37 @@ export default class RoomJoinPage extends Component {
   }
   buttonpressed(){
     const url = "http://127.0.0.1:8000/api/players/";
-    const payload = {
-      "room": this.state.roomCode.toString(),
-      "score": "0",
-      "displayName": this.state.name.toString()
-    }
+    const roomurl = "http://127.0.0.1:8000/api/rooms/";
+    let secret = "";
     var status = false;
-    axios.post(url,payload).then(response => {
-      status = response.status == 200 ? true : false;
-      this.setState({"roomCode":this.state.roomCode})
-    })
-    if (status){
-    this.setState({
-      redirect: `/join/${this.state.roomCode}`,
+    axios.get(roomurl).then(response =>{
+        var rooms = response.data['results'];
+        for (var i=0; i<rooms.length; i++){
+          if (rooms[i].code == this.state.roomCode){
+            status = true;
+            secret = rooms[i].url;
+          }
+        }
+        
+        var payload = {
+          "room": this.state.roomCode.toString(),
+          "score": "0",
+          "displayName": this.state.name.toString(),
+          "roomcode": secret
+        }
+        
+        axios.post(url,payload).then(response => {
+          status = (response.status == 201 || response.status == 200) && (status) ? true : false;
+          if (status){
+            this.setState({
+              redirect : `/join/${this.state.roomCode}`
+            });
+          }
+          
+        })
     });
-  }
+   
+    
     
   }
 
