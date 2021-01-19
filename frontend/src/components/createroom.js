@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import axios from 'axios';
 
 export default class RoomCreatePage extends Component {
@@ -22,7 +23,12 @@ async createButtonPressed () {
     "num_rounds": this.state.num_rounds.toString()
   }
   axios.post(url,payload).then(response => {
-    this.setState({"roomCode":"Complete"})
+    if (response.status == 200){
+      this.setState({
+        redirect: `/join/${response.data['code']}`,
+        roomCode: response.data['code']
+      });
+    }
   })
   
 }
@@ -35,6 +41,9 @@ handleTextFieldChange(event){
 
 
   render() {
+    if(this.state.redirect){
+      return <Redirect to={this.state.redirect} />
+    }
     return (
         
       <Grid container spacing={3} >

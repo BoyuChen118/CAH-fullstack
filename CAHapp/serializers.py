@@ -9,7 +9,7 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
         model = Room
         fields = '__all__'
 
-class CreateRoomSerializer(serializers.HyperlinkedModelSerializer):
+class CreateRoomSerializer(ModelSerializer):
     class Meta:
         model = Room
         fields = ['num_rounds']
@@ -17,4 +17,4 @@ class CreateRoomSerializer(serializers.HyperlinkedModelSerializer):
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
-        fields = ['id','url','room','createdAt']
+        fields = '__all__'

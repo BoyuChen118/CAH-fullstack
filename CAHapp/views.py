@@ -35,7 +35,7 @@ class CreateViewSet(APIView):
         if not self.request.session.exists(self.request.session.session_key):
             # create a session if the browser doesn't have the session
             self.request.session.create()
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             num_rounds = serializer.data.get("num_rounds")
@@ -46,11 +46,11 @@ class CreateViewSet(APIView):
                 dr = duplicateroom[0]
                 dr.num_rounds = num_rounds
                 dr.save(update_fields=['num_rounds'])
-                return Response(RoomSerializer(duplicateroom[0]).data,status=status.HTTP_200_OK)
+                return Response(RoomSerializer(duplicateroom[0],context={'request': request}).data,status=status.HTTP_200_OK)
             else:
                 room = Room(num_rounds=num_rounds,host=host)
                 room.save()
-                return Response(RoomSerializer(room).data,status=status.HTTP_200_OK)
+                return Response(RoomSerializer(room,context={'request': request}).data,status=status.HTTP_200_OK)
                 
 
 

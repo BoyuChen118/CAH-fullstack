@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {Redirect} from "react-router-dom";
-
+import axios from 'axios';
 
 export default class RoomJoinPage extends Component {
   constructor(props) {
@@ -16,10 +16,23 @@ export default class RoomJoinPage extends Component {
     this.buttonpressed= this.buttonpressed.bind(this);
   }
   buttonpressed(){
-    
+    const url = "http://127.0.0.1:8000/api/players/";
+    const payload = {
+      "room": this.state.roomCode.toString(),
+      "score": "0",
+      "displayName": this.state.name.toString()
+    }
+    var status = false;
+    axios.post(url,payload).then(response => {
+      status = response.status == 200 ? true : false;
+      this.setState({"roomCode":this.state.roomCode})
+    })
+    if (status){
     this.setState({
       redirect: `/join/${this.state.roomCode}`,
     });
+  }
+    
   }
 
   handleTextFieldChange(event) {

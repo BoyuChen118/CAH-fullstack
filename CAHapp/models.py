@@ -29,9 +29,11 @@ class Room(models.Model):      # model for each game room
     
 
 
-class Person(models.Model):     # model for player, stores reference to room via code
-    room = models.ForeignKey(Room,on_delete = models.CASCADE, to_field="code")
+class Person(models.Model):     # model for player, stores reference to room via room_code
+    room = models.CharField(max_length=10) 
     createdAt = models.DateTimeField(auto_now=True)
+    score = models.IntegerField(default=0)
+    displayName = models.CharField(max_length=10,default='',unique=True)
 
 
 
