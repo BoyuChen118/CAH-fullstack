@@ -20,28 +20,42 @@ export default class RoomJoinPage extends Component {
     const roomurl = "http://127.0.0.1:8000/api/rooms/";
     let secret = "";
     var status = false;
-    axios.get(roomurl).then(response =>{
+    axios.get(roomurl).then(response =>{  // get necessary info from approriate room model
         var rooms = response.data['results'];
+        var players;
         for (var i=0; i<rooms.length; i++){
           if (rooms[i].code == this.state.roomCode){
             status = true;
             secret = rooms[i].url;
+            players = rooms[i].players
           }
         }
         
         var payload = {
-          "room": this.state.roomCode.toString(),
           "score": "0",
           "displayName": this.state.name.toString(),
           "roomcode": secret
         }
+
         
-        axios.post(url,payload).then(response => {
+        
+        axios.post(url,payload).then(response => {  // post new person object 
           status = (response.status == 201 || response.status == 200) && (status) ? true : false;
+          
           if (status){
-            this.setState({
-              redirect : `/join/${this.state.roomCode}`
-            });
+            var playerurl = response.data['url'];
+            players.push(playerurl);
+
+            var patchpayload = {
+              "players": players
+            }
+
+            axios.patch(secret,patchpayload).then(response => {  // patch request to update room
+              this.setState({
+                redirect : `/join/${this.state.roomCode}`
+              });
+            })
+            
           }
           
         })

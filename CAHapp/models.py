@@ -25,6 +25,7 @@ class Room(models.Model):      # model for each game room
     full = False
     max_capacity = 6
     num_rounds = models.IntegerField(default=10)
+    players = models.ManyToManyField('Person', blank=True)
 
     def __str__(self) -> str:
         return self.code
@@ -32,14 +33,13 @@ class Room(models.Model):      # model for each game room
 
 
 class Person(models.Model):     # model for player, stores reference to room via room_code
-    room = models.CharField(max_length=10) 
     createdAt = models.DateTimeField(auto_now=True)
     score = models.IntegerField(default=0)
     displayName = models.CharField(max_length=10,default='',unique=True)
     roomcode = models.ForeignKey(Room, on_delete=models.CASCADE,blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.room
+        return self.displayName
 
 
 
