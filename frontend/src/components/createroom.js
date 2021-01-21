@@ -3,6 +3,7 @@ import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {Redirect} from "react-router-dom";
 import axios from 'axios';
+import { withRouter } from 'react-router'
 
 export default class RoomCreatePage extends Component {
   constructor(props) {
@@ -25,9 +26,12 @@ async createButtonPressed () {
   axios.post(url,payload).then(response => {
     if (response.status == 201){
       this.setState({
-        redirect: `/join/${response.data['code']}`,
+        redirect: `/join`,
         roomCode: response.data['code']
       });
+      this.props.history.push({
+        data: roomCode
+      })
     }
   })
   
@@ -42,7 +46,12 @@ handleTextFieldChange(event){
 
   render() {
     if(this.state.redirect){
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={{
+        pathname: this.state.redirect,
+        state: {
+          roomCode: this.state.roomCode
+        }
+      }}/>
     }
     return (
         

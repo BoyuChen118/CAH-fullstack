@@ -15,6 +15,17 @@ export default class RoomJoinPage extends Component {
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.buttonpressed= this.buttonpressed.bind(this);
   }
+  componentDidMount(){
+    if (this.props.location.state){ // roomCode is an optional property
+      this.setState({
+        roomCode: this.props.location.state.roomCode
+      });
+    }
+    else{
+      console.log("no");
+    }
+    
+  }
   buttonpressed(){
     const url = "http://127.0.0.1:8000/api/players/";
     const roomurl = "http://127.0.0.1:8000/api/rooms/";
@@ -37,7 +48,6 @@ export default class RoomJoinPage extends Component {
           "roomcode": secret
         }
 
-        
         
         axios.post(url,payload).then(response => {  // post new person object 
           status = (response.status == 201 || response.status == 200) && (status) ? true : false;
@@ -85,7 +95,7 @@ export default class RoomJoinPage extends Component {
         </Grid>
         <Grid item xs={12} align="center">
           <TextField
-          label="Enter RoomCode"  name="roomCode"  onChange={this.handleTextFieldChange}/>
+          label="Enter RoomCode"  value= {this.state.roomCode}  name="roomCode"  onChange={this.handleTextFieldChange}/>
         </Grid>
         <Grid item xs={12} align="center">
         <TextField

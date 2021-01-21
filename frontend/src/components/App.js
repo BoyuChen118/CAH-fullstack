@@ -35,11 +35,10 @@ export default class App extends Component{
         return<div>
          <Router>
           <Switch>
-          <Route path="/join/:roomcode">
-            <Room/>
+          <Route path="/join/:roomcode"> 
+          <Room/>
           </Route>
-          <Route path="/join">
-            <RoomJoinPage />
+          <Route path="/join" render={(props) => <RoomJoinPage {...props}/>}>
           </Route>
           <Route path="/create">
             <RoomCreatePage />

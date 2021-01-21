@@ -32,7 +32,6 @@ export default class Room extends Component{
             roomsdata: roomcode,
             loading: false,
         });
-        console.log(roomcode);
     }
     render(){
         
