@@ -35,8 +35,7 @@ export default class App extends Component{
         return<div>
          <Router>
           <Switch>
-          <Route path="/join/:roomcode"> 
-          <Room/>
+          <Route path="/join/:roomcode" render={(props) => <Room {...props}/>}> 
           </Route>
           <Route path="/join" render={(props) => <RoomJoinPage {...props}/>}>
           </Route>

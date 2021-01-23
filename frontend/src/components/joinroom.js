@@ -11,6 +11,7 @@ export default class RoomJoinPage extends Component {
       roomCode: "",
       name: "",
       redirect: null,
+      roomurl: null,
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.buttonpressed= this.buttonpressed.bind(this);
@@ -22,7 +23,7 @@ export default class RoomJoinPage extends Component {
       });
     }
     else{
-      console.log("no");
+      console.log("no roomcode property");
     }
     
   }
@@ -38,7 +39,7 @@ export default class RoomJoinPage extends Component {
           if (rooms[i].code == this.state.roomCode){
             status = true;
             secret = rooms[i].url;
-            players = rooms[i].players
+            players = rooms[i].players;
           }
         }
         
@@ -48,6 +49,9 @@ export default class RoomJoinPage extends Component {
           "roomcode": secret
         }
 
+        this.setState({
+          roomurl: secret
+        });
         
         axios.post(url,payload).then(response => {  // post new person object 
           status = (response.status == 201 || response.status == 200) && (status) ? true : false;
@@ -84,7 +88,12 @@ export default class RoomJoinPage extends Component {
 
   render() {
     if(this.state.redirect){
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={{
+        pathname: this.state.redirect,
+        state:{
+          roomurl: this.state.roomurl
+        }
+      }} />
     }
     return (
       <Grid container spacing={3} >
