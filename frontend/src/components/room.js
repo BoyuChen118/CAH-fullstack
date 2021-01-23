@@ -20,50 +20,48 @@ export default class Room extends Component{
 
     }
     
-
-
-    async componentDidMount(){
+   async loaddata(){
         const roomcode = window.location.pathname.slice(-6);
         if (this.props.location.state){
             this.setState({
                 roomurl: this.props.location.state.roomurl
             });
         }
-       
-
-        
-        
-        // for (d of data){
-        //     // iterate through room data and find the room with the url code
-        //     console.log("bruh");
-        // }
         this.setState({
             roomsdata: roomcode,
             loading: false,
         });
-
-        this.interval = setInterval(() => { 
             var n = [];  
-            axios.get(this.state.roomurl).then( response =>{
+            axios.get(this.state.roomurl).then(async response =>{
                 var p = response.data['players'];
                 this.setState({ 
                     players:[...p] 
                 });
 
                 for(var i=0; i<p.length; i++){  // async cannot be done with for each
-                    axios.get(p[i]).then(response=>{
-                      n.push(response.data['displayName']);
-                    }
-                        )
+                    // axios.get(p[i]).then(response=>{
+                    //   n.push(response.data['displayName']);
+                    // }
+                    //     )
+                    var response = await axios.get(p[i]);
+                    n.push(response.data['displayName']);
                 }
-
-                this.setState({
-                    names: n        // cannot modify state directly , needs temp array
+                console.log(n);
+                this.setState( previousState => {
+                    return{
+                    names: [ ...n],   // cannot modify state directly , needs temp array
+                    }     
                 });
-                
+                console.log(this.state.names);
             }
             )
+    }
+
+    async componentDidMount(){
+        this.interval = setInterval(() => { 
+           this.loaddata()
             },3000);
+            this.loaddata();
     }
 
     componentWillUnmount(){
@@ -73,20 +71,16 @@ export default class Room extends Component{
     render(){
         
         const namelist  = this.state.names.map((n) => {
-        <li>{n}</li>
+         return <li>{n}</li>
     });
     const bruh = <p>bruh</p>
         return<div id="home2">
         <div style={{justifyContent: 'center'}}><h1>
             Waiting for players...</h1></div>
-            {this.state.loading && this.state.names.length > 1000 ? <div>loading..</div> : <div
+            {this.state.loading ? <div>loading..</div> : <div
             >RoomCode: {this.state.roomsdata}
             <div>
-            {/* {this.state.names.map(person => (
-        <p>{person}</p>
-      ))} */}{
-          namelist
-      }
+                <ol> {namelist}</ol>
             </div>
             </div>}
             <div class="buttons" style={{justifyContent: 'center'}}>
