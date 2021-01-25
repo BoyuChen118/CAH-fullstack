@@ -2,7 +2,7 @@
 
 import requests
 
-response = requests.get('http://127.0.0.1:8000/api/players/')
+response = requests.get('http://127.0.0.1:8000/api/rooms/')
 # response = requests.get('http://127.0.0.1:8000/api/rooms/')
 if response.status_code == 200:
     rooms = response.json()['results']

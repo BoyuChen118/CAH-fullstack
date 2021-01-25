@@ -11,7 +11,8 @@ export default class RoomJoinPage extends Component {
       roomCode: "",
       name: "",
       redirect: null,
-      roomurl: null,
+      roomurl: null,  // refence to player's room
+      playerurl: null, //reference to player
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.buttonpressed= this.buttonpressed.bind(this);
@@ -59,6 +60,9 @@ export default class RoomJoinPage extends Component {
           if (status){
             var playerurl = response.data['url'];
             players.push(playerurl);
+            this.setState({
+              playerurl: playerurl
+            })
 
             var patchpayload = {
               "players": players
@@ -88,10 +92,11 @@ export default class RoomJoinPage extends Component {
 
   render() {
     if(this.state.redirect){
-      return <Redirect to={{
+      return <Redirect to={{  // pass relevant info to room component
         pathname: this.state.redirect,
         state:{
-          roomurl: this.state.roomurl
+          roomurl: this.state.roomurl,
+          playerurl: this.state.playerurl
         }
       }} />
     }

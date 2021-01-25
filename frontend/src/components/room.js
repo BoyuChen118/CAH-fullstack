@@ -16,6 +16,7 @@ export default class Room extends Component{
             players: [],    // reference to every player in the room
             roomurl: null,  //room reference
             names: [],   // name of every player
+            playerurl: null
         }
 
     }
@@ -24,8 +25,10 @@ export default class Room extends Component{
         const roomcode = window.location.pathname.slice(-6);
         if (this.props.location.state){
             this.setState({
-                roomurl: this.props.location.state.roomurl
+                roomurl: this.props.location.state.roomurl,
+                playerurl: this.props.location.state.playerurl
             });
+            console.log(this.state.playerurl);
         }
         this.setState({
             roomsdata: roomcode,
@@ -46,7 +49,6 @@ export default class Room extends Component{
                     var response = await axios.get(p[i]);
                     n.push(response.data['displayName']);
                 }
-                console.log(n);
                 this.setState( previousState => {
                     return{
                     names: [ ...n],   // cannot modify state directly , needs temp array
