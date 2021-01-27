@@ -38,7 +38,7 @@ class Person(models.Model):     # model for player, stores reference to room via
     score = models.IntegerField(default=0)
     displayName = models.CharField(max_length=10,default='',unique=True)
     roomcode = models.ForeignKey(Room, on_delete=models.CASCADE,blank=True, null=True)
-    cards = ArrayField(models.CharField(max_length=50, blank=True), default=list)
+    cards = ArrayField(models.CharField(max_length=70, blank=True), default=list)
 
     def __str__(self) -> str:
         return self.displayName

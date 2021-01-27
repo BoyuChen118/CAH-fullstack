@@ -1,3 +1,4 @@
+from django.http import response
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.apps import *
@@ -7,7 +8,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import PersonSerializer, RoomSerializer
 from .models import Person, Room
-
+from rest_framework.decorators import action
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+import requests,random
 
 
 def index(request):
@@ -22,9 +26,49 @@ class RoomViewSet(viewsets.ModelViewSet):
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    cardsurl = "https://raw.githubusercontent.com/BoyuChen118/CAH-fullstack/master/CAHapp/cah-cards-compact.json"
 
-    # def post(self,request,format=None):
-    #     serializer = self.serializer_class(data=request.data)
+    @action(detail=True,methods=['patch','post'])  # deal x number of card to player: example post payload { "num_cards": 10 }
+    def deal_cards(self,request, pk=None):   
+        player = self.get_object()
+        data = request.data
+        num_cards = data['num_cards']
+        response = requests.get(url=self.cardsurl)
+        if response.status_code == 200:
+            whites = response.json()["white"]
+            cards = random.sample(whites,num_cards)   # select 7 random white cards for the player
+            player.cards = cards
+            player.save(update_fields=["cards"])
+            return Response({"cards":cards},status=200)
+        else:
+            return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True,methods=['post'])  # draw a new card: example post payload {}
+    def draw_card(self,request, pk=None):   
+        player = self.get_object()
+        response = requests.get(self.cardsurl)
+        if response.status_code == 200:
+            whites = response.json()["white"]
+            card = random.sample(whites,1)
+            try:
+                player.cards.append(card[0])
+                player.save(update_fields=["cards"])
+                return Response({"New card drawn": card},status=200)
+            except:
+                return Response({'Card not Found'},status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
+
+
+
+
+    @action(detail=True,methods=['get'])
+    def test(self,request, pk=None):
+        player = self.get_object()
+        room = Room.objects.filter(code="asdf")
+        serializer = RoomSerializer(room,many=True,context={'request': request})
+        return Response(serializer.data, status=200)
+
 
 
 

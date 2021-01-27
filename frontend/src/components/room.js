@@ -16,11 +16,28 @@ export default class Room extends Component{
             players: [],    // reference to every player in the room
             roomurl: null,  //room reference
             names: [],   // name of every player
-            playerurl: null
+            playerurl: null, // reference to current player
+            begun: false
         }
-
+        this.startgame = this.startgame.bind(this);  // start the gamecycle, (each cycle: give eachg player 7 cards and draw a black card)
     }
     
+    async startgame(){
+        clearInterval(this.interval);
+        this.setState({
+            begun: true
+        });
+        // call deal card api endpoint
+        const url = `${this.state.playerurl}deal_cards/`;
+
+        const payload = {
+            "num_cards": 10
+        };
+
+        var response = await axios.post(url,payload);
+        console.log(response.status);
+
+    }
    async loaddata(){
         const roomcode = window.location.pathname.slice(-6);
         if (this.props.location.state){
@@ -28,7 +45,6 @@ export default class Room extends Component{
                 roomurl: this.props.location.state.roomurl,
                 playerurl: this.props.location.state.playerurl
             });
-            console.log(this.state.playerurl);
         }
         this.setState({
             roomsdata: roomcode,
@@ -42,10 +58,6 @@ export default class Room extends Component{
                 });
 
                 for(var i=0; i<p.length; i++){  // async cannot be done with for each
-                    // axios.get(p[i]).then(response=>{
-                    //   n.push(response.data['displayName']);
-                    // }
-                    //     )
                     var response = await axios.get(p[i]);
                     n.push(response.data['displayName']);
                 }
@@ -73,23 +85,32 @@ export default class Room extends Component{
     render(){
         
         const namelist  = this.state.names.map((n) => {
-         return <li>{n}</li>
+         return <li color="white">{n}</li>
     });
-    const bruh = <p>bruh</p>
         return<div id="home2">
         <div style={{justifyContent: 'center'}}><h1>
             Waiting for players...</h1></div>
+            { this.state.begun ? 
+            <div>
+            game started
+            </div> :
+            <div>
             {this.state.loading ? <div>loading..</div> : <div
             >RoomCode: {this.state.roomsdata}
             <div>
                 <ol> {namelist}</ol>
             </div>
+            <Button variant="contained"
+            color="default"
+            onClick={this.startgame}>Start Game</Button>
             </div>}
-            <div class="buttons" style={{justifyContent: 'center'}}>
+            </div>
+            }
+            
             
           </div>
      
-            </div>
+         
         
      
     }
