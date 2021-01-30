@@ -13,7 +13,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 import requests,random
 
-
+cardsurl = "https://raw.githubusercontent.com/BoyuChen118/CAH-fullstack/master/CAHapp/cah-cards-compact.json"
 def index(request):
     return HttpResponse("Hello World!")
 
@@ -23,17 +23,31 @@ class RoomViewSet(viewsets.ModelViewSet):
     def test(self):
         return HttpResponse("I'm in RoomViewset")
 
+    @action(detail=True,methods=['post'])
+    def draw_black(self,request,pk=None): # draw a black card: example post payload {}
+        room = self.get_object()
+        response = requests.get(url=cardsurl)
+        if response.status_code == 200:
+            blacks = response.json()["black"]
+            card = random.sample(blacks,1)[0]
+            room.pick = card["pick"]
+            room.cardtext = card["text"]
+            room.save(update_fields=["pick","cardtext"])
+            return Response({"Black card drawn:": card},status.HTTP_200_OK)
+        else:
+            return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
+
+
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-    cardsurl = "https://raw.githubusercontent.com/BoyuChen118/CAH-fullstack/master/CAHapp/cah-cards-compact.json"
 
     @action(detail=True,methods=['patch','post'])  # deal x number of card to player: example post payload { "num_cards": 10 }
     def deal_cards(self,request, pk=None):   
         player = self.get_object()
         data = request.data
         num_cards = data['num_cards']
-        response = requests.get(url=self.cardsurl)
+        response = requests.get(url=cardsurl)
         if response.status_code == 200:
             whites = response.json()["white"]
             cards = random.sample(whites,num_cards)   # select 7 random white cards for the player
@@ -43,22 +57,29 @@ class PersonViewSet(viewsets.ModelViewSet):
         else:
             return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True,methods=['post'])  # draw a new card: example post payload {}
-    def draw_card(self,request, pk=None):   
+    @action(detail=True,methods=['post'])  # draw n new cards: example post payload { "cards_drawn": 1}
+    def draw_cards(self,request, pk=None):   
         player = self.get_object()
-        response = requests.get(self.cardsurl)
+        response = requests.get(cardsurl)
+        cards_drawn = request.data['cards_drawn']
         if response.status_code == 200:
             whites = response.json()["white"]
-            card = random.sample(whites,1)
+            cards = random.sample(whites,1)
+            if cards_drawn:
+                cards = random.sample(whites,cards_drawn)
+            else:
+                return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
             try:
-                player.cards.append(card[0])
+                for c in cards:
+                    player.cards.append(c)
                 player.save(update_fields=["cards"])
-                return Response({"New card drawn": card},status=200)
+                return Response({"New cards drawn": cards},status=200)
             except:
                 return Response({'Card not Found'},status.HTTP_404_NOT_FOUND)
         else:
             return Response({'Invalid Requests'},status.HTTP_400_BAD_REQUEST)
-
+    
+    
 
 
 

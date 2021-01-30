@@ -27,6 +27,8 @@ class Room(models.Model):      # model for each game room
     max_capacity = 6
     num_rounds = models.IntegerField(default=10)
     players = models.ManyToManyField('Person', blank=True)
+    pick = models.IntegerField(default=0)
+    cardtext = models.CharField( max_length=70 ,default='')
 
     def __str__(self) -> str:
         return self.code

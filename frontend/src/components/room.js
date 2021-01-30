@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import TestModule from "./test";
-import { Button } from "@material-ui/core";
+import { Button, CardContent } from "@material-ui/core";
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import ListItem from '@material-ui/core/ListItem';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 
 export default class Room extends Component{
     constructor(props){
@@ -17,7 +19,8 @@ export default class Room extends Component{
             roomurl: null,  //room reference
             names: [],   // name of every player
             playerurl: null, // reference to current player
-            begun: false
+            begun: false, // if game has begun
+            ended: false  //if game has ended
         }
         this.startgame = this.startgame.bind(this);  // start the gamecycle, (each cycle: give eachg player 7 cards and draw a black card)
     }
@@ -92,7 +95,12 @@ export default class Room extends Component{
             Waiting for players...</h1></div>
             { this.state.begun ? 
             <div>
-            game started
+            game start
+            <Card>
+                <CardContent>
+                    Word of the day
+                </CardContent>
+            </Card>
             </div> :
             <div>
             {this.state.loading ? <div>loading..</div> : <div
