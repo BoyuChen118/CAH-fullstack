@@ -7,6 +7,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import RoomJoinPage from "./joinroom";
 import Home from "./home";
 import RoomCreatePage from "./createroom.js"
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 import {
     BrowserRouter as Router,
@@ -14,6 +16,19 @@ import {
     Route,
     Link
   } from "react-router-dom";
+
+  const theme = createMuiTheme({
+    overrides: {
+      MuiPaper: {
+        root: {
+          padding: '30px',
+          marginBottom: '30px',
+          height: 140,
+          width: 90,
+        },
+      },
+    }
+  });
 
 export default class App extends Component{
     state = {
@@ -32,7 +47,7 @@ export default class App extends Component{
     //     });
     // }
     render(){
-        return<div>
+        return<MuiThemeProvider theme={theme}><div>
          <Router>
           <Switch>
           <Route path="/join/:roomcode/" render={(props) => <Room {...props}/>}> 
@@ -49,6 +64,7 @@ export default class App extends Component{
         </Switch>
         </Router>
             </div>
+            </MuiThemeProvider>
         
      
     }

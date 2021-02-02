@@ -7,7 +7,11 @@ import axios from 'axios';
 import ListItem from '@material-ui/core/ListItem';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import { IconButton } from '@material-ui/core';
+import { Typography } from "@material-ui/core";
 export default class Room extends Component{
     constructor(props){
         super(props);
@@ -86,7 +90,6 @@ export default class Room extends Component{
     }
 
     render(){
-        
         const namelist  = this.state.names.map((n) => {
          return <li color="white">{n}</li>
     });
@@ -96,11 +99,51 @@ export default class Room extends Component{
             { this.state.begun ? 
             <div>
             game start
-            <Card>
-                <CardContent>
-                    Word of the day
-                </CardContent>
-            </Card>
+            <div>
+            <div>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <IconButton>
+          <Paper elevation={5}>xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={6}>
+        <IconButton>
+          <Paper elevation={5} >xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={6}>
+        <IconButton>
+          <Paper elevation={5}>xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={3}>
+        <IconButton>
+          <Paper elevation={5}>xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={3}>
+          <IconButton>
+          <Paper elevation={5}>xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={3}>
+        <IconButton>
+          <Paper elevation={5}>xs=12</Paper>
+          </IconButton>
+        </Grid>
+        <Grid item xs={3}>
+        <IconButton>
+          <Paper elevation={5} >
+          <Typography variant="body2" component="p">
+            Testing card theme with muitheme and MuiPaper
+            </Typography>
+            </Paper>
+          </IconButton>
+        </Grid>
+      </Grid>
+    </div>
+              </div>
             </div> :
             <div>
             {this.state.loading ? <div>loading..</div> : <div
